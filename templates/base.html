@@ -1,0 +1,94 @@
+{% load bootstrap5 %}
+{% load static %}
+  
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    body {
+    font-family: "Tagesschrift", system-ui;
+    font-size: x-large;
+    }
+    .container-nav {
+      background: linear-gradient(200deg, rgba(22, 190, 236, 0.799), rgba(159, 224, 27, 0.932));
+      border-radius: 10px;
+    }
+
+    @media (max-width: 630px){
+       .navbar-responsive {
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+
+    .nav-links-responsive {
+      flex-direction: column !important;
+      align-items: center !important;
+      width: 100%;
+      padding-top: 10px;
+      gap: 0.5rem;
+    }
+
+    .container-nav {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+
+    .navbar-brand img {
+      max-width: 150px;
+      height: auto;
+    }
+  }
+
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <body style="background-color: #fffaf0;">
+<nav class="navbar navbar-toggler position-relative p-0" >
+  <div class="container-fluid p-0" style="background-color: #fffaf0;">
+    <div class="row w-100 m-0">
+      <div class="d-flex w-100 flex-md-row navbar-responsive">
+      <div class="col-4 container-nav d-flex align-items-center justify-content-center" style="min-height: 100px;">
+        <a class="navbar-brand" href="{% url 'portada' %}">
+          <img src="{% static 'logo_cinco.jpeg' %}" alt="logo_after" width="150" height="auto">
+        </a>
+      </div>
+      
+      <!-- Links con fondo blanco -->
+      <div class="col-8 d-flex align-items-center justify-content-center" style="background-color: #fffaf0;">
+        <a class="nav-link text-dark fw-bold" href="#">Mí historia</a>
+        <a class="nav-link text-dark fw-bold" href="#">Talleres</a>
+        <a class="nav-link text-dark fw-bold" href="#">Realiza tú pedido</a>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</nav>
+
+
+    {% block content %}
+
+    {% endblock %}
+    <footer class="bg-dark">
+      <div class="container pt-3 pb-3">
+        <div class="row">
+          <div class="col-lg-4">
+            <h3 class="text-white">Enlaces</h3>
+              <a href="" class="text-white">Quienes Somos</a><br>
+              <a href="" class="text-white">Talleres</a><br>
+              <a href="" class="text-white">Contactanos</a>
+          </div>
+          <div class="col-lg-4">
+            <h3 class="text-white">Contacto</h3>
+            <p class="text-white">Correo electrónico: info@example.com</p>
+            <p class="text-white">Instagram: @arcoirisdebambino</p> 
+            <p class="text-white">Teléfono: 123-456-7890</p>
+          </div>
+          <div class="col-lg-4">
+            <h3 class="text-white">Derechos de autor</h3>
+            <p class="text-white">(c) 2023 Mi Sitio Web. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  
+  </body>
+</html>

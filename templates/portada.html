@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+<style>
+    .carousel-inner img {
+        max-height: 300px;
+        border-radius: 10px;
+    }
+    .conteiner-card {
+        margin-bottom: 2rem;
+        max-width: 375px !important;
+    }
+    .card-body p {
+        font-size: 0.9rem;
+    }
+    .nav-link {
+        font-family: serif;
+    }
+    .carousel-item img {
+        max-height:300px;
+        border-radius: 20px;
+        object-fit: contain; /* o "contain" si prefieres que no se recorten */
+    }
+    .nav-link{
+      color: black;
+    }
+    .list-group-item{
+      font-size: 1rem;
+    }
+    @media (max-width: 576px) {
+      .card img{
+        max-width: 300px !important;
+        max-height: 250px !important;
+      }
+      .card{
+        max-width: 300px;
+        max-height: 500px;
+      }
+      .contenedor{
+        display: flex;
+        justify-content: center;
+      }
+    }
+    @media (max-width:768px){
+      .container{
+        display: none;
+      }
+    }
+    @media (max-width: 991px){
+      .nav{
+        display: inline;
+      }
+      .nav-item{
+        display: inline !important;
+      }
+      .nav-link{
+        display: inline !important;
+      }
+    }
+
+
+</style>
+<div style="background-color:#fffaf0">
+  <div class="container py-4 my-5" style="background: linear-gradient(200deg, rgba(22, 190, 236, 0.799), rgba(159, 224, 27, 0.932)); border-radius: 10px;">
+    <div class="row align-items-center" style="max-height: 300px;">
+      <!-- Texto a la izquierda -->
+      <div class="col-md-6 px-4">
+        <div id="carouselTextContent" class="text-start carousel slide carousel-fade">
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselPortada" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="false"></span>  
+          </button>
+          <h3 id="carouselTitle" class="fw-bold mb-3" style="text-align: end;">Título de la primera imagen</h3>
+          <p id="carouselDescription" class="lead" style="text-align: end;">Descripción o texto relacionado con la primera imagen.</p>
+        </div>
+      </div>
+      <!-- Imagen a la derecha -->
+      <div class="col-md-6">
+        <div id="carouselPortada" class="carousel slide carousel-fade" data-bs-ride="carousel">
+          <div class="carousel-inner rounded shadow">
+            <div class="carousel-item active" data-title="Título de la primera imagen" data-description="Descripción o texto relacionado con la primera imagen.">
+              <img src="{% static 'img2.png' %}" class="d-block w-100" style="height: 400px; object-fit: contain;" alt="...">
+            </div>
+            <div class="carousel-item" data-title="Título de la segunda imagen" data-description="Descripción o texto relacionado con la segunda imagen.">
+              <img src="{% static 'img3.png' %}" class="d-block w-100" style="height: 400px; object-fit: contain;" alt="...">
+            </div>
+            <div class="carousel-item" data-title="Título de la tercera imagen" data-description="Descripción o texto relacionado con la tercera imagen.">
+              <img src="{% static 'img4.jpg' %}" class="d-block w-100" style="height: 400px; object-fit: contain;" alt="...">
+            </div>
+          </div>
+          <!-- Controles -->
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselPortada" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="false"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid my-4">
+    <div class="row">
+      <div class="d-block d-md-none mb-3">
+        <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filtrosCollapse" aria-expanded="false" aria-controls="filtrosCollapse">
+          Mostrar/Ocultar Filtros
+        </button>
+      </div>
+      <!--Nav Categorias-->
+      <div class="col-lg-3 mb-3">
+        <div class="collapse d-md-block" id="filtrosCollapse">
+          <h3 class="text-dark fw-bold"><u>Filtros</u></h3>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link {% if categoria == 'Hogar' %}active{% endif %}" href="?categoria=Hogar">Hogar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if categoria == 'Jardín' %}active{% endif %}" href="?categoria=Jardín">Jardín</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if categoria == 'Limpieza' %}active{% endif %}" href="?categoria=Limpieza">Limpieza</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if categoria == 'Infantil' %}active{% endif %}" href="?categoria=Infantil">Infantil</a>
+            </li>
+          </ul>
+        </div>
+        <!-- Lista de productos agregados -->
+        <div class="col-lg-3 mt-2" style="width: 240px;">
+            <h4><u>Carrito</u></h4>
+            <ul id="carrito-lista" class="list-group my-3"></ul>
+            <form method="POST" action="{% url 'checkout' %}">
+              {% csrf_token %}
+              <input type="hidden" name="items" id="items-input">
+              <button type="submit" class="btn btn-success">Enviar Pedido</button>
+            </form>
+          </div>  
+      </div>
+      <!--Cards-->
+      <div class="col-lg-9 ">
+        <div class="row g-4 contenedor">
+          {% for card in page_obj %}
+          <div class="col-sm-6 col-md-6 col-lg-4 conteiner-card">
+            <div class="card h-100" style="background-color: e6f7fc;">
+              <img src="{{ card.imagen }}" class="card-img-top" alt="{{ card.titulo }}">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ card.titulo }}</h5>
+                <p class="card-text">{{ card.descripcion }}</p>
+                <p class="card-text"><strong>Precio: </strong>${{ card.Precio }}</p>
+                <button class="btn btn-primary mt-auto agregar-btn mb-2"
+                    data-titulo="{{ card.titulo }}"
+                    data-precio="{{ card.Precio }}"> Agregar</button>
+                <a href="#" class="btn btn-primary mt-auto" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.counter }}">Ver más</a>
+              </div>
+            </div>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="modalLabel{{ forloop.counter }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabel{{ forloop.counter }}">{{ card.titulo }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="text-center">
+                    <img src="{{ card.imagen }}" class="img-fluid mb-3" alt="{{ card.titulo }}">
+                  </div>
+                  <p><strong>Descripción:</strong> {{ card.descripcion }}</p>
+                  <p><strong>Precio:</strong> ${{ card.Precio }}</p>
+                  <p><strong>Información adicional:</strong> {{ card.adicional }}</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% include 'paginacion.html'%}
+    </div>
+  </div>
+</div>
+<script>
+  const carousel = document.getElementById('carouselPortada');
+  const titleEl = document.getElementById('carouselTitle');
+  const descEl = document.getElementById('carouselDescription');
+
+  carousel.addEventListener('slide.bs.carousel', function (event) {
+    const nextSlide = event.relatedTarget;
+    const title = nextSlide.getAttribute('data-title');
+    const description = nextSlide.getAttribute('data-description');
+
+    titleEl.textContent = title;
+    descEl.textContent = description;
+  });
+
+
+
+  // Carrito de compras
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  const lista = document.getElementById('carrito-lista');
+  const inputHidden = document.getElementById('items-input');
+
+  function guardarEnLocalStorage() {
+    localStorage.setItem('carrito', JSON.stringify(carrito)); // Reemplaza comillas simples por dobles 
+  } // JSON no permite comillas simples
+
+  function actualizarCarritoVista() {
+    lista.innerHTML = '';
+    carrito.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+      li.innerHTML = `
+        ${item.titulo} - $${item.precio}
+        <button class="btn btn-danger btn-sm eliminar-btn" data-index="${index}">Eliminar</button>
+      `;
+      lista.appendChild(li);
+    });
+    inputHidden.value = JSON.stringify(carrito);
+  }
+
+  document.querySelectorAll('.agregar-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const titulo = btn.getAttribute('data-titulo');
+      const precio = btn.getAttribute('data-precio');
+      carrito.push({ titulo, precio });
+      guardarEnLocalStorage();
+      actualizarCarritoVista();
+    });
+  });
+
+  lista.addEventListener('click', function (e) {
+    if (e.target.classList.contains('eliminar-btn')) {
+      const index = e.target.getAttribute('data-index');
+      carrito.splice(index, 1);
+      guardarEnLocalStorage();
+      actualizarCarritoVista();
+    }
+  });
+
+  // Al cargar la página
+  document.addEventListener('DOMContentLoaded', () => {
+    actualizarCarritoVista();
+  });
+  
+</script>
+{% endblock %}

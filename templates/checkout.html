@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block content %}
+{% load humanize%}
+
+<style>
+  ul{
+    width: 80%;
+  }
+  .form-control{
+    width: 80%;
+  }
+</style>
+
+<div class="container my-5">
+  <h2>Resumen del Pedido</h2>
+  <ul class="list-group my-4">
+    {% for item in items %}
+      <li class="list-group-item d-flex justify-content-between">
+        <p>{{ item.titulo }}</p>
+        <p>${{ item.precio}}</p>
+      </li>
+    {% endfor %}
+    <li class="list-group-item d-flex justify-content-between">
+      <p class="text-end">Total: $ {{ total|intcomma }}</p>
+    </li>
+  </ul>
+
+  <h3>Datos de contacto</h3>
+  <form method="POST" action="{% url 'procesar_pedido' %}">
+    {% csrf_token %}
+    <input type="hidden" name="items" value='{{ items_json|escapejs }}'>
+    <div class="mb-3">
+      <label>Nombre</label>
+      <input type="text" name="nombre" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>Dirección</label>
+      <input type="text" name="direccion" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>Correo</label>
+      <input type="email" name="correo" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>Número de contacto</label>
+      <input type="text" name="telefono" class="form-control" maxlength="9" minlength="9" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar Pedido</button>
+  </form>
+</div>
+
+{% endblock%}
