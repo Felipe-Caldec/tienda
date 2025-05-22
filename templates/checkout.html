@@ -2,7 +2,7 @@
 {% load static %}
 {% load bootstrap5 %}
 {% block content %}
-{% load humanize%}
+{% load humanize %}
 
 <style>
   ul{
@@ -23,12 +23,13 @@
       </li>
     {% endfor %}
     <li class="list-group-item d-flex justify-content-between">
-      <p class="text-end">Total: $ {{ total|intcomma }}</p>
+      <p>Total: </p>
+      <p>$ {{ total|intcomma }}</p>
     </li>
   </ul>
 
   <h3>Datos de contacto</h3>
-  <form method="POST" action="{% url 'procesar_pedido' %}">
+  <form method="POST" action="{% url 'procesar_pedido' %}" content = "charset=UTF-8">
     {% csrf_token %}
     <input type="hidden" name="items" value='{{ items_json|escapejs }}'>
     <div class="mb-3">
@@ -47,7 +48,6 @@
       <label>Número de contacto</label>
       <input type="text" name="telefono" class="form-control" maxlength="9" minlength="9" required>
     </div>
-
     <button type="submit" class="btn btn-primary">Enviar Pedido</button>
   </form>
 </div>

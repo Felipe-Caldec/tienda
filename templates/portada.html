@@ -28,6 +28,16 @@
     .list-group-item{
       font-size: 1rem;
     }
+    .carousel-text {
+    position: relative; /* Necesario para que el botón se posicione dentro */
+    padding-right: 2rem; /* Asegura espacio para el botón */
+    }
+    .prev-text {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem; /* o 'right: 0.5rem' si quieres que esté al otro lado */
+    z-index: 10;
+    }
     @media (max-width: 576px) {
       .card img{
         max-width: 300px !important;
@@ -37,26 +47,29 @@
         max-width: 300px;
         max-height: 500px;
       }
+
+    }
+    @media (max-width:768px){
+      .carousel-text h3, .carousel-text p{
+        display: none;
+      }
+      .prev-img {
+        display: block !important;
+      }
+      .prev-text {
+        display: none !important;
+      }
+    }
+    @media (max-width: 991px){
+      .nav, .nav-item, .nav-link {
+        display: inline;
+      }
+
       .contenedor{
         display: flex;
         justify-content: center;
       }
-    }
-    @media (max-width:768px){
-      .container{
-        display: none;
-      }
-    }
-    @media (max-width: 991px){
-      .nav{
-        display: inline;
-      }
-      .nav-item{
-        display: inline !important;
-      }
-      .nav-link{
-        display: inline !important;
-      }
+
     }
 
 
@@ -66,8 +79,8 @@
     <div class="row align-items-center" style="max-height: 300px;">
       <!-- Texto a la izquierda -->
       <div class="col-md-6 px-4">
-        <div id="carouselTextContent" class="text-start carousel slide carousel-fade">
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselPortada" data-bs-slide="prev">
+        <div id="carouselTextContent" class="text-start carousel-text slide carousel-fade">
+          <button class="carousel-control-prev prev-text" type="button" data-bs-target="#carouselPortada" data-bs-slide="prev">
             <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="false"></span>  
           </button>
           <h3 id="carouselTitle" class="fw-bold mb-3" style="text-align: end;">Título de la primera imagen</h3>
@@ -77,7 +90,7 @@
       <!-- Imagen a la derecha -->
       <div class="col-md-6">
         <div id="carouselPortada" class="carousel slide carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-inner rounded shadow">
+          <div class="carousel-inner rounded">
             <div class="carousel-item active" data-title="Título de la primera imagen" data-description="Descripción o texto relacionado con la primera imagen.">
               <img src="{% static 'img2.png' %}" class="d-block w-100" style="height: 400px; object-fit: contain;" alt="...">
             </div>
@@ -89,6 +102,9 @@
             </div>
           </div>
           <!-- Controles -->
+          <button class="carousel-control-prev prev-img" type="button" data-bs-target="#carouselPortada" data-bs-slide="prev" style="display: none;">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="false"></span>  
+          </button>
           <button class="carousel-control-next" type="button" data-bs-target="#carouselPortada" data-bs-slide="next">
             <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="false"></span>
           </button>

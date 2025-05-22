@@ -4,32 +4,33 @@ from django.templatetags.static import static
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+import codecs
 from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.humanize.templatetags.humanize import intcomma
+
 
 def portada(request):
     cards = [
-        {"titulo": "Corazon de yeso", 'descripcion': ' Lindo corazon para regalo', "Precio": "2.000", 'imagen': static('img1.jpg'), 'categoria':'Hogar', 'adicional':' Corazon hecho de yeso sin pintar'},
-        {"titulo": "Card 2", 'descripcion': 'Texto 2', "Precio": "2.000", 'imagen': 'ruta2.jpg', 'categoria':'Hogar'},
-        {"titulo": "Card 3", 'descripcion': 'Texto 3', "Precio": "2.000", 'imagen': 'ruta3.jpg', 'categoria':'Hogar'},
-        {"titulo": "Card 4", 'descripcion': 'Texto 4', "Precio": "2.000", 'imagen': 'ruta4.jpg', 'categoria':'Limpieza'},
-        {"titulo": "Card 5", 'descripcion': 'Texto 5', "Precio": "2.000", 'imagen': 'ruta5.jpg', 'categoria':'Infantil'},
-        {"titulo": "Card 6", 'descripcion': 'Texto 6', "Precio": "2.000", 'imagen': 'ruta6.jpg', 'categoria':'Jardín'},
-        {"titulo": "Card 7", 'descripcion': 'Texto 7', "Precio": "2.000", 'imagen': 'ruta7.jpg', 'categoria':'Infantil'},
-        {"titulo": "Card 8", 'descripcion': 'Texto 8', "Precio": "2.000", 'imagen': static('img2.png'), 'categoria':'Jardín'},
-        {"titulo": "Card 9", 'descripcion': 'Texto 9', "Precio": "2.000", 'imagen': static('img3.png'), 'categoria':'Jardín'},
-        {"titulo": "Card 10", 'descripcion': 'Texto 10', "Precio": "2.000", 'imagen': static('img4.jpg'), 'categoria':'Jardín'},
-        {"titulo": "Card 11", 'descripcion': 'Texto 11', "Precio": "2.000", 'imagen': static('img5.jpg'), 'categoria':'Infantil'},
-        {"titulo": "Card 12", 'descripcion': 'Texto 12', "Precio": "2.000", 'imagen': static('img6.png'), 'categoria':'Infantil'},
-        {"titulo": "Card 13", 'descripcion': 'Texto 13', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Infantil'},
-        {"titulo": "Card 14", 'descripcion': 'Texto 14', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Limpieza'},
-        {"titulo": "Card 15", 'descripcion': 'Texto 15', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Limpieza'},
-        {"titulo": "Card 16", 'descripcion': 'Texto 16', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Limpieza'},
-        {"titulo": "Card 17", 'descripcion': 'Texto 17', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Limpieza'},
-        {"titulo": "Card 18", 'descripcion': 'Texto 18', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Hogar'},
-        {"titulo": "Card 19", 'descripcion': 'Texto 19', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Hogar'},
-        {"titulo": "Card 20", 'descripcion': 'Texto 20', "Precio": "2.000",'imagen': static('images.jpg'), 'categoria':'Hogar'}
+        {"titulo": "Corazon de yeso", "descripcion": "Lindo corazon para regalo", "Precio": "2.000", "imagen": static("img1.jpg"), "categoria":"Hogar", "adicional":"Corazon hecho de yeso sin pintar"},
+        {"titulo": "Card 2", "descripcion": "Texto 2", "Precio": "2.000", "imagen": "ruta2.jpg", "categoria":"Hogar"},
+        {"titulo":"Card 3", "descripcion": "Texto 3", "Precio": "2.000", "imagen": "ruta3.jpg", "categoria":"Hogar"},
+        {"titulo": "Card 4", "descripcion": "Texto 4", "Precio": "2.000", "imagen": "ruta4.jpg", "categoria":"Limpieza"},
+        {"titulo": "Card 5", "descripcion": "Texto 5", "Precio": "2.000", "imagen": "ruta5.jpg", "categoria":"Infantil"},
+        {"titulo": "Card 6", "descripcion": "Texto 6", "Precio": "2.000", "imagen": "ruta6.jpg", "categoria":"Jardín"},
+        {"titulo": "Card 7", "descripcion": "Texto 7", "Precio": "2.000", "imagen": "ruta7.jpg", "categoria":"Infantil"},
+        {"titulo": "Card 8", "descripcion": "Texto 8", "Precio": "2.000", "imagen": static("img2.png"),"categoria":"Jardín"},
+        {"titulo": "Card 9", "descripcion": "Texto 9", "Precio": "2.000", "imagen": static("img3.png"), "categoria":"Jardín"},
+        {"titulo": "Card 10", "descripcion": "Texto 10", "Precio": "2.000", "imagen": static("img4.jpg"), "categoria":"Jardín"},
+        {"titulo": "Card 11", "descripcion": "Texto 11", "Precio": "2.000", "imagen": static("img5.jpg"), "categoria":"Infantil"},
+        {"titulo": "Card 12", "descripcion": "Texto 12", "Precio": "2.000", "imagen": static("img6.png"), "categoria":"Infantil"},
+        {"titulo": "Card 13", "descripcion": "Texto 13", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Infantil"},
+        {"titulo":"Card 14", "descripcion": "Texto 14", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Limpieza"},
+        {"titulo": "Card 15", "descripcion": "Texto 15", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Limpieza"},
+        {"titulo": "Card 16", "descripcion": "Texto 16", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Limpieza"},
+        {"titulo": "Card 17", "descripcion": "Texto 17", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Limpieza"},
+        {"titulo": "Card 18", "descripcion": "Texto 18", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Hogar"},
+        {"titulo": "Card 19", "descripcion": "Texto 19", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Hogar"},
+        {"titulo": "Card 20", "descripcion": "Texto 20", "Precio": "2.000","imagen": static("images.jpg"), "categoria":"Hogar"}
       
     ]
 
@@ -67,24 +68,28 @@ def checkout(request):
 
 def procesar_pedido(request):
     if request.method == 'POST':
-        items = json.loads(request.POST.get('items'))
-        nombre = request.POST.get('nombre')
-        direccion = request.POST.get('direccion')
-        correo = request.POST.get('correo')
-        telefono = request.POST.get('telefono')
+        items_raw = request.POST.get('items')
+        items_unescaped = codecs.decode(items_raw, 'unicode_escape') #Decodificamos los caracteres unicode escapados
+        items = json.loads(items_unescaped)
+        nombre = request.POST.get("nombre")
+        direccion = request.POST.get("direccion")
+        correo = request.POST.get("correo")
+        telefono = request.POST.get("telefono")
 
-        mensaje = f"Nuevo pedido de: {nombre}\n\n"
+        mensaje = f"Nuevo pedido de: {nombre}\n"
         mensaje += f"Dirección: {direccion}\nCorreo: {correo}\nTeléfono: {telefono}\n\n"
         mensaje += "Productos solicitados:\n"
 
         for item in items:
             mensaje += f"- {item['titulo']} (${item['precio']})\n"
 
+        mensaje += f"\nTotal: ${sum(int(item['precio'].replace('.', '')) for item in items)}"
+
         send_mail(
             subject="Nuevo Pedido",
             message=mensaje,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.DEFAULT_FROM_EMAIL],  # o tu correo
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[settings.EMAIL_HOST_USER],  
             fail_silently=False,
         )
 

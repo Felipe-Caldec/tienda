@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cinco_app',
     'bootstrap5',
-    'humanize',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
